@@ -45,7 +45,7 @@ const task3 = async () => {
         let resItem = {};
         resItem["Retention Time Roundoff (in mins)"] =
           item["Retention Time Roundoff (in mins)"];
-        console.log(len);
+
         headings.forEach((header) => {
           if (!dontInclude.includes(header)) {
             resItem[header] = item[header] / len;
