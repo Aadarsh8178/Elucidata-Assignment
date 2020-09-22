@@ -9,8 +9,6 @@ var path = require("path");
 var task1 = require("./task1");
 var task2 = require("./task2");
 var task3 = require("./task3");
-var xlsxtojson = require("xlsx-to-json");
-var data = require("./data.json");
 app.use(cors());
 app.use(bodyParser.json());
 var storage = multer.diskStorage({
@@ -19,15 +17,7 @@ var storage = multer.diskStorage({
     cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
-    var datetimestamp = Date.now();
-    cb(
-      null,
-      file.fieldname +
-        "-" +
-        datetimestamp +
-        "." +
-        file.originalname.split(".")[file.originalname.split(".").length - 1]
-    );
+    cb(null, "inputFile.xlsx");
   },
 });
 
@@ -60,24 +50,7 @@ app.post("/upload", function (req, res) {
       res.json({ error_code: 1, err_desc: "No file passed" });
       return;
     }
-
-    try {
-      xlsxtojson(
-        {
-          input: req.file.path,
-          output: "data.json",
-          lowerCaseHeaders: true,
-        },
-        function (err, result) {
-          if (err) {
-            return res.json({ error_code: 1, err_desc: err, data: null });
-          }
-          res.json({ error_code: 0, err_desc: null });
-        }
-      );
-    } catch (e) {
-      res.json({ error_code: 1, err_desc: "Corupted excel file" });
-    }
+    res.json({ error_code: 0, err_desc: null });
   });
 });
 app.get("/task1", async (req, res) => {
