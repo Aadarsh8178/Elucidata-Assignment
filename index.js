@@ -65,7 +65,7 @@ app.post("/upload", function (req, res) {
       xlsxtojson(
         {
           input: req.file.path,
-          output: "data.json", //since we don't need output.json
+          output: "data.json",
           lowerCaseHeaders: true,
         },
         function (err, result) {
@@ -144,6 +144,9 @@ app.get("/cleandata", async (req, res) => {
     let directory = `${__dirname}/output/`;
     let files = await fs.readdir(directory);
     for (const file of files) {
+      if (file === "output.txt") {
+        continue;
+      }
       fs.unlink(path.join(directory, file), (err) => {
         if (err) throw err;
       });
@@ -151,6 +154,9 @@ app.get("/cleandata", async (req, res) => {
     directory = `${__dirname}/uploads/`;
     files = await fs.readdir(directory);
     for (const file of files) {
+      if (file === "uploads.txt") {
+        continue;
+      }
       fs.unlink(path.join(directory, file), (err) => {
         if (err) throw err;
       });
